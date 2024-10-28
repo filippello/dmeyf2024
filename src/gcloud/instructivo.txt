@@ -1,0 +1,3 @@
+subir  la base con solo baja al bucket /datasets
+subir los scripts al buko de cloud a buko/b1/public/
+abrir el gcloud_desde_cloab.ipynb  y seguir los pasos
