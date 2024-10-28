@@ -1,0 +1,23 @@
+local: True
+base_path_local: "/Users/federicofilippello/Projects/dmeyf2024/src/gcloud"
+dataset_path_local: "/Users/federicofilippello/Projects/dmeyf2024/src/gcloud/db/"
+gcloud_user: "fililoco"
+dataset_file: "competencia_02_polars.csv"
+ganancia_acierto: 300000
+costo_estimulo: 8000
+mes_train: [202105,202106]
+mes_test: 202108
+modelos_path: "modelos/"
+db_path: "db/"
+semillas: [181001, 181019, 183041, 199753, 184007]
+n_trials: 100
+d_columns: ['cprestamos_personales', 'mprestamos_personales']
+bucketname : 'fililocobuket'
+
+# Variables del handler
+study_type: "exp_02"
+study_number: "1"
+study_data: "data"
+study_protocol: "lgmb"
+study_timeframe: "2023"
+study_aditional: "info_extra"
