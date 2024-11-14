@@ -56,7 +56,7 @@ Temporary Items
 __pycache__/
 !README.md
 *.ipynb_checkpoints/
-
+modelos/
 *copia.ipynb
 
 # XCode
