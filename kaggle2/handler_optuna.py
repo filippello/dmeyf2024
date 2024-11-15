@@ -27,7 +27,7 @@ if __name__ == "__main__":
         storage_name = "sqlite:///optimization_lgbm.db"
         
     else:
-        base_path = f'/Users/{config["gcloud_user"]}/Projects/dmeyf2024/src/kaggle2'
+        base_path = f'/Users/{config["gcloud_user"]}/dmeyf2024/kaggle2'
         dataset_path = f'/Users/{config["gcloud_user"]}/b1/datasets/{config["dataset_file"]}'
         storage_name = f"sqlite:////Users/{config["gcloud_user"]}/b1/datasets/db/optimization_lgbm.db"
 
