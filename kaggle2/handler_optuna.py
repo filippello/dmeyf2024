@@ -27,14 +27,17 @@ if __name__ == "__main__":
         base_path = config['base_path_local']
         dataset_path = config['dataset_path_local']+config["dataset_file"]
         storage_name = "sqlite:///optimization_lgbm.db"
+        modelos_path = os.path.join(base_path, config["modelos_path"])
+        db_path = os.path.join(base_path, config["db_path"])
         
     else:
         base_path = f'/home/{config["gcloud_user"]}/dmeyf2024/kaggle2'
         dataset_path = f'/home/{config["gcloud_user"]}/buckets/b1/datasets/{config["dataset_file"]}'
-        storage_name = f"sqlite:////home/{config["gcloud_user"]}/buckets/b1/datasets/db/optimization_lgbm.db"
+        storage_name = f"sqlite:////home/{config["gcloud_user"]}/buckets/b1/db/optimization_lgbm.db"
+        modelos_path = f'/home/{config["gcloud_user"]}/buckets/b1/models/'
+        db_path = f"sqlite:////home/{config["gcloud_user"]}/buckets/b1/datasets/db/"
 
-    modelos_path = os.path.join(base_path, config["modelos_path"])
-    db_path = os.path.join(base_path, config["db_path"])
+
 
     # Leer dataset
     data = pd.read_csv(dataset_path)
