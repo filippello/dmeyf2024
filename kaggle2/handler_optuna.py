@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
 
     # Leer dataset
-    data = pd.read_csv(dataset_path,low_memory=False))
+    data = pd.read_csv(dataset_path,low_memory=False)
 
     # Extraer variables desde el archivo YAML
     ganancia_acierto = config["ganancia_acierto"]
