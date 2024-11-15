@@ -16,7 +16,9 @@ def load_config(yaml_file):
 
 if __name__ == "__main__":
     # Carga la configuración desde config.yaml
-    config = load_config("config.yaml")
+    
+    config = load_config("/home/fililoco/buckets/b1/repos/dmeyf2024/kaggle2/config.yaml")
+    #config = load_config("config.yaml")
 
 
     
