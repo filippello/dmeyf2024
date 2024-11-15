@@ -67,6 +67,7 @@ if __name__ == "__main__":
     print(f"Tipo de estudio: {study_type}, Número de estudio: {study_number}")
     print(f"Datos del estudio: {study_data}, Protocolo: {study_protocol}")
     print(f"Marco temporal del estudio: {study_timeframe}, Información adicional: {study_aditional}")
+    print(f'storage_name: {storage_name}')
 
     # Preparar el dataset
     data = prepare_df_del_columns(data, d_columns)
