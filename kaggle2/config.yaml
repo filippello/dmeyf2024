@@ -9,7 +9,7 @@ dataset_path_local: /Users/federicofilippello/Projects/dmeyf2024/src/experimento
 db_path: db/
 ganancia_acierto: 273000
 gcloud_user: fililoco
-local: true
+local: false
 mes_test: 202106
 mes_test_prediccion: 202108
 mes_train:
