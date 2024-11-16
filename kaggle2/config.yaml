@@ -43,12 +43,12 @@ mes_train:
   - 202104
   - 202105
 modelos_path: modelos/
-n_trials: 40
+n_trials: 30
 semillas:
 - 181194
 study_aditional: ''
 study_data: all
-study_number: '1'
+study_number: '2'
 study_protocol: lgmb
 study_timeframe: '2023'
 study_type: competencia_02_lgmb
