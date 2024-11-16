@@ -13,15 +13,42 @@ local: false
 mes_test: 202106
 mes_test_prediccion: 202108
 mes_train:
+  - 201901
+  - 201902
+  - 201903
+  - 201904
+  - 201905
+  - 201906
+  - 201907
+  - 201908
+  - 201909
+  - 201910
+  - 201911
+  - 201912
+  - 202001
+  - 202002
+  - 202003
+  - 202004
+  - 202005
+  - 202006
+  - 202007
+  - 202008
+  - 202009
+  - 202010
+  - 202011
+  - 202012
+  - 202101
+  - 202102
+  - 202103
   - 202104
   - 202105
 modelos_path: modelos/
-n_trials: 2
+n_trials: 40
 semillas:
 - 181194
 study_aditional: ''
 study_data: all
-study_number: '2'
+study_number: '1'
 study_protocol: lgmb
 study_timeframe: '2023'
 study_type: competencia_02_lgmb
