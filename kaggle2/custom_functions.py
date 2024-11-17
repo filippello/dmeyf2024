@@ -2,6 +2,8 @@ import lightgbm as lgb
 import numpy as np
 import yaml
 import numpy as np
+import os
+
 
 # Cargar configuración desde el archivo YAML
 def load_config(yaml_file):
@@ -10,6 +12,8 @@ def load_config(yaml_file):
     return config
 
 config_path = os.getenv("CONFIG_PATH")
+config = load_config(config_path)
+ 
 #config = load_config("/home/fililoco/dmeyf2024/kaggle2/config.yaml")
 #config = load_config("config.yaml")
 semillas = config["semillas"]
