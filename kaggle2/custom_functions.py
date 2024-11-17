@@ -11,11 +11,11 @@ def load_config(yaml_file):
         config = yaml.safe_load(file)
     return config
 
-# config_path = os.getenv("CONFIG_PATH")
-# config = load_config(config_path)
+config_path = os.getenv("CONFIG_PATH")
+config = load_config(config_path)
  
 #config = load_config("/home/fililoco/dmeyf2024/kaggle2/config.yaml")
-config = load_config("config.yaml")
+#config = load_config("config.yaml")
 semillas = config["semillas"]
 
 def lgb_gan_eval(y_pred, data):
