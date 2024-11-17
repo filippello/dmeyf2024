@@ -11,11 +11,11 @@ def load_config(yaml_file):
         config = yaml.safe_load(file)
     return config
 
-config_path = os.getenv("CONFIG_PATH")
-config = load_config(config_path)
+# config_path = os.getenv("CONFIG_PATH")
+# config = load_config(config_path)
  
 #config = load_config("/home/fililoco/dmeyf2024/kaggle2/config.yaml")
-#config = load_config("config.yaml")
+config = load_config("config.yaml")
 semillas = config["semillas"]
 
 def lgb_gan_eval(y_pred, data):
@@ -130,7 +130,7 @@ def prepare_df_del_columns(data,d_columns):
     data = data.drop(d_columns, axis=1)
     return data
 
-def prepare_df_1(data,mes_train,mes_test):
+def prepare_df_1_baja3(data,mes_train,mes_test):
     data['clase_peso'] = 1.0
 
     data.loc[data['clase_ternaria'] == 'BAJA+3', 'clase_peso'] = 1.00001
