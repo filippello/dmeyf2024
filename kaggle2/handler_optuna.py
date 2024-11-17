@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import lightgbm as lgb
 import optuna
-from custom_functions import lgb_gan_eval, objective, ganancia_prob, prepare_df_1, prepare_df_del_columns, prepare_df_1_clasic
+from custom_functions import lgb_gan_eval, objective, ganancia_prob, prepare_df_del_columns, prepare_df_1_clasic
 import os
 
 # Cargar configuración desde el archivo YAML
