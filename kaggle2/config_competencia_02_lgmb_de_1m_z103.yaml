@@ -9,15 +9,17 @@ dataset_path_local: /Users/federicofilippello/Projects/dmeyf2024/src/experimento
 db_path: db/
 ganancia_acierto: 273000
 gcloud_user: fililoco
-local: false
+local: true
 mes_test: 202105
 mes_test_prediccion: 202108
 mes_train:
-  - 202103
+- 202103
 modelos_path: modelos/
 n_trials: 50
+semilla_semillero: 3
 semillas:
-- 181194
+- 181200
+semillero_count: 10
 study_aditional: ''
 study_data: all
 study_number: '1'

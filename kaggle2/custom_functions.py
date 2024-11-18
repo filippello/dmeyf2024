@@ -126,6 +126,7 @@ def ganancia_prob_iter_prom(y_pred, y_true, prop = 1):
     return df_resultados
 
 
+
 def prepare_df_del_columns(data,d_columns):
     data = data.drop(d_columns, axis=1)
     return data
@@ -210,3 +211,10 @@ def prepare_df_1_ganancia(data,mes_train,mes_test):
     y_test_class = test_data['clase_ternaria']
     w_test = test_data['clase_peso']
     return X_train, y_train_binaria1, y_train_binaria2, w_train, X_test, y_test_binaria1, y_test_class, w_test
+
+def prepare_df_pred(data,mes_pred):
+    pred_data = data[data['foto_mes'] == mes_pred]
+
+    X_test = pred_data.drop(['clase_ternaria'], axis=1)
+
+    return X_test

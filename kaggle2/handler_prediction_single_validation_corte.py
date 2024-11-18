@@ -1,6 +1,6 @@
-from custom_functions import lgb_gan_eval, objective, ganancia_prob, prepare_df_1, prepare_df_del_columns, prepare_df_1_clasic
+from custom_functions import lgb_gan_eval, objective, ganancia_prob,prepare_df_del_columns,prepare_df_1_clasic,ganancia_prob_iter,ganancia_prob_iter_prom
 import yaml
-
+import json
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -22,14 +22,17 @@ def load_config(yaml_file):
     return config
 
 if __name__ == "__main__":
-    config = load_config("config.yaml")
+    #config = load_config("config.yaml")
+    config_path = os.getenv("CONFIG_PATH")
+    config = load_config(config_path)
 
-
-    
     # Definir rutas y archivos
     if(config["local"]):
         base_path = config['base_path_local']
-        dataset_path = config['dataset_path_local']+config["dataset_file"]
+        dataset_path = "/Users/federicofilippello/Projects/dmeyf2024/kaggle2/datasets_competencia_02_DE_1y.csv"
+        storage_name = "sqlite:////Users/federicofilippello/Projects/dmeyf2024/kaggle2/db/optimization_lgbm.db"
+        modelos_path = os.path.join(base_path, config["modelos_path"])
+        db_path = os.path.join(base_path, config["db_path"])
     else:
         base_path = f'/home/{config["gcloud_user"]}/dmeyf2024/kaggle2'
         dataset_path = f'/home/{config["gcloud_user"]}/buckets/b1/datasets/{config["dataset_file"]}'
@@ -78,7 +81,7 @@ if __name__ == "__main__":
     X_train, y_train_binaria1, y_train_binaria2, w_train, X_test, y_test_binaria1, y_test_class, w_test = prepare_df_1_clasic(data,mes_train,mes_test)
 
     #b. Creamos el estudio de Optuna
-    storage_name = "sqlite:///optimization_lgbm.db"
+    #storage_name = "sqlite:///optimization_lgbm.db"
     study_name = f"{study_type}_{study_number}_{study_protocol}_data-{study_data}_optuna-{study_number}_timeframe{study_timeframe}_extra-{study_aditional}"
     #cargamos la iter
     study = optuna.create_study(
@@ -126,18 +129,27 @@ model_lgb = lgb.Booster(model_file=model_file_path)
 
 #g. Predecimos Junio.
 #i. Realizo la predicción de probabilidades usando el modelo entrenado.
-predicciones = model_lgb.predict(X_test)
+#predicciones = model_lgb.predict(X_test)
 #ii. Convierto las probabilidades a clases usando el punto de corte 0.025.
-clases = [1 if prob >= 0.03 else 0 for prob in predicciones]
-#iii. Solo envío estímulo a los registros con probabilidad de "BAJA+2" mayor a 1/40.
-X_test['Predicted'] = clases
-#v. Selecciono las columnas de interés.
-resultados = X_test[["numero_de_cliente", 'Predicted']].reset_index(drop=True)
-#vi. Exporto como archivo .csv.
-nombre_archivo = "K106_005.csv"
 
-ruta_archivo= f"{exp_path}{nombre_archivo}"
-resultados.to_csv(ruta_archivo, index=False)
+
+
+#g. Predecimos Junio.
+#i. Realizo la predicción de probabilidades usando el modelo entrenado.
+
+predicciones = model_lgb.predict(X_test)
+#print(predicciones)
+#print(y_train_binaria1.value_counts())
+
+# normal
+#gananciaprob = ganancia_prob_iter(predicciones, y_test_binaria1, prop = 1)
+#super iter
+#gananciaprob , mejor_threshold = ganancia_prob_iter(predicciones, y_test_binaria1, prop = 1)
+
+
+
+
+
 
 
 
@@ -146,27 +158,39 @@ X_test['Probabilidad'] = predicciones
 #iii. Ordenamos a los clientes por probabilidad de ser "BAJA" de forma descendente.
 tb_entrega = X_test.sort_values(by='Probabilidad', ascending=False)
 #iv. Genero una lista de distintos cortes candidatos, para enviar a Kaggle.
-cortes = range(9000,14000,100)
-cortes = [12000]
+cortes = range(9500,12500,100)
+#cortes = [12000]
 #v. Generamos las distintas predicciones de clases a partir de los distintos cortes posibles.
 num_subida_kaggle = 1
+df_resultados = pd.DataFrame(['corte','ganancia'])
+df_resultados_tot = pd.DataFrame()
+tb_entrega['real'] = y_test_binaria1
+resultados = {}
 for envios in cortes:
     #1. Le ponemos clase 1 ("BAJA") a los primeros "envios" con mayor probabilidad.
+    
     tb_entrega['Predicted'] = 0
     tb_entrega.iloc[:envios, tb_entrega.columns.get_loc('Predicted')] = 1
-    resultados = tb_entrega[["numero_de_cliente", 'Predicted']].reset_index(drop=True)
-    
-    print("Cantidad de clientes {}".format(envios))
-    #2. Guardamos el archivo para Kaggle.
-    nombre_archivo = "K107_00{}.csv".format(num_subida_kaggle)
-    ruta_archivo= f"{exp_path}{nombre_archivo}"
-    resultados.to_csv(ruta_archivo, index=False)
-    
-"""     num_subida_kaggle += 1
-    
-    #3. Envío a Kaggle.
-    #a. Defino los parámetros claves.
-    mensaje = f'Archivo {nombre_archivo}. LGB Optuna optimizado con FE (lgb_datos_fe_02_ajusto_optuna), punto_corte: {envios}. No se imputa, 100 Trials para búsqueda de hiperparámetros, 1000 boost con stop early'
-    competencia = 'dm-ey-f-2024-primera'
-    #c. Subo la Submission.
-    api.competition_submit(file_name=ruta_archivo,message=mensaje,competition=competencia) """
+    #resultados = tb_entrega[["numero_de_cliente", 'Predicted']].reset_index(drop=True)
+    ganancia = np.where(tb_entrega['real'] == 1, config['ganancia_acierto'], 0) - np.where(tb_entrega['real']  == 0, config['costo_estimulo'], 0)
+    gananciatot = ganancia[tb_entrega['Predicted']>= 1].sum()
+    print(envios)
+    print(gananciatot)
+    resultados[envios] = gananciatot
+    #sumar df_resultados a df_resultados_tot
+
+
+    print("Ganancia: ", gananciatot)
+    import csv
+df_resultados_tot = pd.DataFrame([resultados])
+if os.path.exists("ganancia_corte.csv") and os.path.getsize("ganancia_corte.csv") > 0:
+    ganancias_valuesDF = pd.read_csv("ganancia_corte.csv")
+    #ganancias_valuesDF = pd.concat([df_resultados_tot, df_resultados], ignore_index=True)
+    ganancias_valuesDF = pd.concat([df_resultados_tot, pd.DataFrame([df_resultados_tot.values[0]], columns=df_resultados_tot.columns)], ignore_index=True)
+    print("first")
+else:
+    print("second")
+    ganancias_valuesDF = df_resultados_tot
+
+ganancias_valuesDF.to_csv("ganancia_corte.csv", index=False)
+
