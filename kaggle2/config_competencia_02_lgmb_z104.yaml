@@ -13,17 +13,17 @@ gcloud_user: fililoco
 local: false
 mes_test: 202008
 mes_train_prediccion:
-  - 202106
+  - 202008
 mes_test_prediccion: 202108
 mes_train:
-  - 202006
+  - 202005
 modelos_path: modelos/
 n_trials: 50
 semillas:
 - 181194
 study_aditional: ''
 study_data: all
-study_number: '1'
+study_number: '2'
 study_protocol: lgmb
 study_timeframe: '2023'
 study_type: competencia_02_lgmb_de_mirrortest
