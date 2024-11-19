@@ -29,7 +29,7 @@ if __name__ == "__main__":
     # Definir rutas y archivos
     if(config["local"]):
         base_path = config['base_path_local']
-        dataset_path = "/Users/federicofilippello/Projects/dmeyf2024/kaggle2/datasets_competencia_02_DE_1y.csv"
+        dataset_path = "/Users/federicofilippello/Projects/dmeyf2024/kaggle2/competencia_02_DE_1y_sample.csv"
         storage_name = "sqlite:////Users/federicofilippello/Projects/dmeyf2024/kaggle2/db/optimization_lgbm.db"
         modelos_path = os.path.join(base_path, config["modelos_path"])
         db_path = os.path.join(base_path, config["db_path"])
@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
     #X_train, y_train_binaria1, y_train_binaria2, w_train, X_test, y_test_binaria1, y_test_class, w_test = prepare_df_1_clasic(data,mes_train,mes_test)
     
-    X_train, y_train_binaria1, y_train_binaria2, w_train, X_pred, y_test_binaria1, y_test_class, w_test = prepare_df_1_clasic_pred(data,mes_train,mes_test)
+    X_train, y_train_binaria1, y_train_binaria2, w_train, X_pred, y_test_binaria1, y_test_class, w_test = prepare_df_1_clasic_pred(data,mes_train,mes_pred)
    
     
     
