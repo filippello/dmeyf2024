@@ -1,4 +1,4 @@
-from custom_functions import lgb_gan_eval, objective, ganancia_prob,prepare_df_del_columns,prepare_df_1_clasic,ganancia_prob_iter,ganancia_prob_iter_prom,prepare_df_pred
+from custom_functions import lgb_gan_eval, objective, ganancia_prob,prepare_df_del_columns,prepare_df_1_clasic,ganancia_prob_iter,ganancia_prob_iter_prom,prepare_df_pred,prepare_df_1_clasic_pred
 import yaml
 import json
 import pandas as pd
@@ -77,12 +77,20 @@ if __name__ == "__main__":
     print(f"Marco temporal del estudio: {study_timeframe}, Información adicional: {study_aditional}")
     print(f'storage_name: {storage_name}')
 
+
     #preparamos el dataset
     #borramnos columnas
     data = prepare_df_del_columns(data,d_columns)
     #lo fraccionamos
-    X_train, y_train_binaria1, y_train_binaria2, w_train, X_test, y_test_binaria1, y_test_class, w_test = prepare_df_1_clasic(data,mes_train,mes_test)
-    X_pred = prepare_df_pred(data,mes_pred)
+
+    #X_train, y_train_binaria1, y_train_binaria2, w_train, X_test, y_test_binaria1, y_test_class, w_test = prepare_df_1_clasic(data,mes_train,mes_test)
+    
+    X_train, y_train_binaria1, y_train_binaria2, w_train, X_pred, y_test_binaria1, y_test_class, w_test = prepare_df_1_clasic_pred(data,mes_train,mes_test)
+   
+    
+    
+    #X_pred,X_pred_train = prepare_df_pred(data,mes_pred,mes_train)
+
     #b. Creamos el estudio de Optuna
     #storage_name = "sqlite:///optimization_lgbm.db"
     study_name = f"{study_type}_{study_number}_{study_protocol}_data-{study_data}_optuna-{study_number}_timeframe{study_timeframe}_extra-{study_aditional}"
@@ -117,6 +125,7 @@ if __name__ == "__main__":
         'verbose': 0
     }
 
+
     train_data = lgb.Dataset(X_train,
                             label=y_train_binaria2,
                             weight=w_train)
@@ -138,7 +147,10 @@ if __name__ == "__main__":
     #predicciones = model_lgb.predict(X_test)
     #ii. Convierto las probabilidades a clases usando el punto de corte 0.025.
 
-
+    print(X_pred.shape)
+    print(X_pred.columns)
+    print(X_train.shape)
+    print(X_train.columns)
 
     #g. Predecimos Junio.
     #i. Realizo la predicción de probabilidades usando el modelo entrenado.

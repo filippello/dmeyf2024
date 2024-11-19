@@ -184,6 +184,33 @@ def prepare_df_1_clasic(data,mes_train,mes_test):
     w_test = test_data['clase_peso']
     return X_train, y_train_binaria1, y_train_binaria2, w_train, X_test, y_test_binaria1, y_test_class, w_test
 
+def prepare_df_1_clasic_pred(data,mes_train,mes_test):
+    data['clase_peso'] = 1.0
+
+    data.loc[data['clase_ternaria'] == 'BAJA+2', 'clase_peso'] = 1.00002
+    data.loc[data['clase_ternaria'] == 'BAJA+1', 'clase_peso'] = 1.00001
+
+    data['clase_binaria1'] = 0
+    data['clase_binaria2'] = 0
+    data['clase_binaria1'] = np.where(data['clase_ternaria'] == 'BAJA+2', 1, 0)
+    data['clase_binaria2'] = np.where(data['clase_ternaria'] == 'CONTINUA', 0, 1)
+    #solari
+    #train_data = data[data['foto_mes'].isin(mes_train)]
+    train_data = data[data['foto_mes'].isin(mes_train)]
+    test_data = data[data['foto_mes'] == mes_test]
+
+    X_train = train_data.drop(['clase_ternaria', 'clase_peso', 'clase_binaria1','clase_binaria2'], axis=1)
+    y_train_binaria1 = train_data['clase_binaria1']
+    y_train_binaria2 = train_data['clase_binaria2']
+    w_train = train_data['clase_peso']
+
+    X_test = test_data.drop(['clase_ternaria', 'clase_peso', 'clase_binaria1','clase_binaria2'], axis=1)
+    y_test_binaria1 = test_data['clase_binaria1']
+    y_test_class = test_data['clase_ternaria']
+    w_test = test_data['clase_peso']
+    return X_train, y_train_binaria1, y_train_binaria2, w_train, X_test, y_test_binaria1, y_test_class, w_test
+
+
 
 def prepare_df_1_ganancia(data,mes_train,mes_test):
     data['clase_peso'] = 1.0
@@ -212,9 +239,18 @@ def prepare_df_1_ganancia(data,mes_train,mes_test):
     w_test = test_data['clase_peso']
     return X_train, y_train_binaria1, y_train_binaria2, w_train, X_test, y_test_binaria1, y_test_class, w_test
 
-def prepare_df_pred(data,mes_pred):
+def prepare_df_pred(data,mes_pred,mes_train):
     pred_data = data[data['foto_mes'] == mes_pred]
+    pred_train_data = data[data['foto_mes'].isin(mes_train)]
 
-    X_test = pred_data.drop(['clase_ternaria'], axis=1)
+    X_pred_train = pred_train_data.drop(['clase_ternaria'])
+    X_pred= pred_data.drop(['clase_ternaria'], axis=1)
+    return X_pred,X_pred_train
 
-    return X_test
+def prepare_df_pred_full(data,mes_pred,mes_train,mes_test):
+    pred_data = data[data['foto_mes'] == mes_pred]
+    pred_train_data = data[data['foto_mes'].isin(mes_train.append(mes_test))]
+
+    X_pred_train = pred_train_data.drop(['clase_ternaria'])
+    X_pred= pred_data.drop(['clase_ternaria'], axis=1)
+    return X_pred,X_pred_train
