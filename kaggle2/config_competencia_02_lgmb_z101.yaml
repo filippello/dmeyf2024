@@ -42,6 +42,7 @@ mes_train:
   - 202103
   - 202104
   - 202105
+  - 202106
 modelos_path: modelos/
 n_trials: 30
 semillas:
