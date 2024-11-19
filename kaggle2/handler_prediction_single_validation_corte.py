@@ -192,5 +192,7 @@ else:
     print("second")
     ganancias_valuesDF = df_resultados_tot
 
-ganancias_valuesDF.to_csv("ganancia_corte.csv", index=False)
+#ganancias_valuesDF.to_csv("ganancia_corte.csv", index=False)
+ganancias_valuesDF.to_csv(f'ganancia_{study_name}.csv', index=False)
+
 
