@@ -1,5 +1,6 @@
 base_path_local: /Users/federicofilippello/Projects/dmeyf2024/src/experimentosfede
 bucketname: fililocobuket
+vm_name: z101
 costo_estimulo: 7000
 d_columns:
 - cprestamos_personales
@@ -48,7 +49,7 @@ semillas:
 - 181194
 study_aditional: ''
 study_data: all
-study_number: '2'
+study_number: '3'
 study_protocol: lgmb
 study_timeframe: '2023'
 study_type: competencia_02_lgmb_de
