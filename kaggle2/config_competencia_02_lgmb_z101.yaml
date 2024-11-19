@@ -4,7 +4,7 @@ costo_estimulo: 7000
 d_columns:
 - cprestamos_personales
 - mprestamos_personales
-dataset_file: competencia_02_polars.csv
+dataset_file: competencia_02_DE.csv
 dataset_path_local: /Users/federicofilippello/Projects/dmeyf2024/src/experimentosfede/
 db_path: db/
 ganancia_acierto: 273000
@@ -42,9 +42,8 @@ mes_train:
   - 202103
   - 202104
   - 202105
-  - 202106
 modelos_path: modelos/
-n_trials: 30
+n_trials: 50
 semillas:
 - 181194
 study_aditional: ''
