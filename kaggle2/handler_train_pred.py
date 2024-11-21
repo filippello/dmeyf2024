@@ -37,7 +37,7 @@ if __name__ == "__main__":
     else:
         base_path = f'/home/{config["gcloud_user"]}/dmeyf2024/kaggle2'
         dataset_path = f'/home/{config["gcloud_user"]}/buckets/b1/datasets/{config["dataset_file"]}'
-        storage_name = f"sqlite:////home/{config["gcloud_user"]}/buckets/b1/db/optimization_lgbm.db"
+        storage_name = f"sqlite:////home/{config["gcloud_user"]}/buckets/b1/db/{config["vm_name"]}/optimization_lgbm.db"
         modelos_path = f'/home/{config["gcloud_user"]}/buckets/b1/models/'
         db_path = f"sqlite:////home/{config["gcloud_user"]}/buckets/b1/datasets/db/"
         exp_path = f'/home/{config["gcloud_user"]}/buckets/b1/exp/'
