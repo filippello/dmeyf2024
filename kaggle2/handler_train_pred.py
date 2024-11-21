@@ -42,13 +42,12 @@ if __name__ == "__main__":
         db_path = f"sqlite:////home/{config["gcloud_user"]}/buckets/b1/datasets/db/"
         exp_path = f'/home/{config["gcloud_user"]}/buckets/b1/exp/'
         entregas_path = f'/home/{config["gcloud_user"]}/buckets/b1/entregas/'
-        dataset_pred_path = f'/home/{config["gcloud_user"]}/buckets/b1/datasets/{config["dataset_file"]}'
 
     #modelos_path = os.path.join(base_path, config["modelos_path"])
     #db_path = os.path.join(base_path, config["db_path"])
 
     # Leer dataset
-    data = pd.read_csv(dataset_pred_path,low_memory=False)
+    data = pd.read_csv(dataset_path,low_memory=False)
 
  # Extraer variables desde el archivo YAML
     ganancia_acierto = config["ganancia_acierto"]
