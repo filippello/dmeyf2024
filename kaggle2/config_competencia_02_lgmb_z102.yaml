@@ -17,9 +17,9 @@ mes_train:
   - 201908
   - 202008
 modelos_path: modelos/
-n_trials: 30
+n_trials: 100
 semillas:
-- 181194
+- 181195
 study_aditional: ''
 study_data: all
 study_number: '1'
