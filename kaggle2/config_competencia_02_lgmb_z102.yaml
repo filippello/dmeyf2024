@@ -4,21 +4,17 @@ costo_estimulo: 7000
 d_columns:
 - cprestamos_personales
 - mprestamos_personales
-dataset_file: competencia_02_DE_6m.csv
+dataset_file: competencia_02_baja.csv
 dataset_path_local: /Users/federicofilippello/Projects/dmeyf2024/src/experimentosfede/
 db_path: db/
 ganancia_acierto: 273000
 gcloud_user: fililoco
 local: false
-mes_test: 202105
+mes_test: 202008
 mes_test_prediccion: 202108
 mes_train:
-  - 202011
-  - 202012
-  - 202101
-  - 202102
-  - 202103
-  - 202104
+  - 201908
+  - 202008
 modelos_path: modelos/
 n_trials: 30
 semillas:
