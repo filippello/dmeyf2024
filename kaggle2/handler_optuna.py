@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import lightgbm as lgb
 import optuna
-from custom_functions import lgb_gan_eval, objective, ganancia_prob, prepare_df_1, prepare_df_del_columns, prepare_df_1_clasic
+from custom_functions import lgb_gan_eval, objective, ganancia_prob, prepare_df_del_columns, prepare_df_1_clasic
 import os
 
 # Cargar configuración desde el archivo YAML
@@ -14,10 +14,12 @@ def load_config(yaml_file):
         config = yaml.safe_load(file)
     return config
 
+
 if __name__ == "__main__":
     # Carga la configuración desde config.yaml
-    
-    config = load_config("/home/fililoco/dmeyf2024/kaggle2/config.yaml")
+    config_path = os.getenv("CONFIG_PATH")
+    config = load_config(config_path)
+    #config = load_config("/home/fililoco/dmeyf2024/kaggle2/config.yaml")
     #config = load_config("config.yaml")
 
 
@@ -33,7 +35,7 @@ if __name__ == "__main__":
     else:
         base_path = f'/home/{config["gcloud_user"]}/dmeyf2024/kaggle2'
         dataset_path = f'/home/{config["gcloud_user"]}/buckets/b1/datasets/{config["dataset_file"]}'
-        storage_name = f"sqlite:////home/{config["gcloud_user"]}/buckets/b1/db/optimization_lgbm.db"
+        storage_name = f"sqlite:////home/{config["gcloud_user"]}/buckets/b1/db/{config["vm_name"]}/optimization_lgbm.db"
         modelos_path = f'/home/{config["gcloud_user"]}/buckets/b1/models/'
         db_path = f"sqlite:////home/{config["gcloud_user"]}/buckets/b1/datasets/db/"
 
