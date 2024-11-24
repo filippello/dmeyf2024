@@ -12,11 +12,10 @@ ganancia_acierto: 273000
 gcloud_user: fililoco
 local: false
 mes_test: 202008
-mes_train_prediccion:
-  - 202008
 mes_test_prediccion: 202108
 mes_train:
-  - 202005
+  - 201908
+  - 202008
 modelos_path: modelos/
 n_trials: 50
 semillas:
@@ -28,3 +27,4 @@ study_protocol: lgmb
 study_timeframe: '2023'
 study_type: competencia_02_lgmb_de_mirrortest
 semillero_count: 10
+vm_name: z104
