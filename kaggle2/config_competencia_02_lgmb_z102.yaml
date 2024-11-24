@@ -15,6 +15,7 @@ mes_test: 202008
 mes_test_prediccion: 202108
 mes_train:
   - 202008
+  - 201908
 modelos_path: modelos/
 n_trials: 30
 semillas:
