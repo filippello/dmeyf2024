@@ -1,28 +1,30 @@
 base_path_local: /Users/federicofilippello/Projects/dmeyf2024/src/experimentosfede
 bucketname: fililocobuket
 costo_estimulo: 7000
+vm_name: z103
 d_columns:
 - cprestamos_personales
 - mprestamos_personales
-dataset_file: competencia_02_DE.csv
+dataset_file: competencia_02_sumas_drifting_fe_3_08_2.csv
 dataset_path_local: /Users/federicofilippello/Projects/dmeyf2024/src/experimentosfede/
 db_path: db/
 ganancia_acierto: 273000
 gcloud_user: fililoco
-local: true
-mes_test: 202105
+local: false
+mes_test: 202108
 mes_test_prediccion: 202108
 mes_train:
-- 202103
+- 201908
+- 202008
 modelos_path: modelos/
-n_trials: 50
+n_trials: 60
 semilla_semillero: 3
 semillas:
-- 181200
+- 181196
 semillero_count: 10
 study_aditional: ''
 study_data: all
 study_number: '1'
 study_protocol: lgmb
 study_timeframe: '2023'
-study_type: competencia_02_lgmb_de_1m
+study_type: competencia_02_lgmb_de_1m_z103_08
