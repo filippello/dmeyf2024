@@ -17,7 +17,7 @@ mes_train:
 - 201908
 - 202008
 modelos_path: modelos/
-n_trials: 30
+n_trials: 60
 semilla_semillero: 3
 semillas:
 - 181196
