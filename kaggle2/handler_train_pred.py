@@ -176,7 +176,7 @@ if __name__ == "__main__":
         
         print("Cantidad de clientes {}".format(envios))
         #2. Guardamos el archivo para Kaggle.
-        nombre_archivo = "K107_00{}.csv".format(envios)
+        nombre_archivo = "z103_00{}.csv".format(envios)
         ruta_archivo= f"{entregas_path}{nombre_archivo}"
         resultados.to_csv(ruta_archivo, index=False)
 
