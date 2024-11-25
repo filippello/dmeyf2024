@@ -5,7 +5,7 @@ vm_name: z102
 d_columns:
 - cprestamos_personales
 - mprestamos_personales
-dataset_file: competencia_02_baja.csv
+dataset_file: competencia_02_sumas_drifting_fe_3_08.csv
 dataset_path_local: /Users/federicofilippello/Projects/dmeyf2024/src/experimentosfede/
 db_path: db/
 ganancia_acierto: 273000
@@ -15,13 +15,14 @@ mes_test: 202008
 mes_test_prediccion: 202108
 mes_train:
   - 202008
+  - 201908
 modelos_path: modelos/
-n_trials: 100
+n_trials: 30
 semillas:
-- 181197
+- 181194
 study_aditional: ''
 study_data: all
 study_number: '31'
 study_protocol: lgmb
 study_timeframe: '2023'
-study_type: competencia_02_lgmb_de_1m_08
+study_type: competencia_02_lgmb_de_1m_08_tt
