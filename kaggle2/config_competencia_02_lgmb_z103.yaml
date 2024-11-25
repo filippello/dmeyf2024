@@ -20,7 +20,7 @@ modelos_path: modelos/
 n_trials: 60
 semilla_semillero: 3
 semillas:
-- 181195
+- 181190
 semillero_count: 10
 study_aditional: ''
 study_data: all
