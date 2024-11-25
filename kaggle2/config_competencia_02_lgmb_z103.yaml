@@ -1,6 +1,7 @@
 base_path_local: /Users/federicofilippello/Projects/dmeyf2024/src/experimentosfede
 bucketname: fililocobuket
 costo_estimulo: 7000
+vm_name: z103
 d_columns:
 - cprestamos_personales
 - mprestamos_personales
