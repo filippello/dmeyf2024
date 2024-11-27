@@ -39,7 +39,7 @@ competencia_02 = competencia_02.sort(["numero_de_cliente", "foto_mes"])
 ventanas = [3, 6]
 
 # Lista de columnas dinámicas
-columnas_dinamicas = ["monto_gasto", "transacciones", "saldo"]  # Ejemplo
+columnas_dinamicas = campos_iniciales
 
 # Nombre de las columnas que identifican cliente y tiempo
 cliente_col = "numero_de_cliente"
@@ -54,11 +54,10 @@ def calculate_slope(series):
 # Lista para almacenar todas las transformaciones
 transformaciones = []
 
-# Iteramos sobre cada columna dinámica
-# Limitar los decimales en las columnas derivadas
+
 for campo in columnas_dinamicas:
     for ventana in ventanas:
-        # Agregamos estadísticas básicas con redondeo
+        # Agregamos estadísticas básicas y avanzadas
         transformaciones.extend([
             pl.col(campo).rolling_mean(window_size=ventana).over(cliente_col).round(3).alias(f"{campo}_avg_{ventana}m"),
             pl.col(campo).rolling_sum(window_size=ventana).over(cliente_col).round(3).alias(f"{campo}_sum_{ventana}m"),
@@ -67,13 +66,13 @@ for campo in columnas_dinamicas:
             pl.col(campo).rolling_std(window_size=ventana).over(cliente_col).round(3).alias(f"{campo}_volatility_{ventana}m"),
             (pl.col(campo).rolling_max(window_size=ventana).over(cliente_col) /
              pl.col(campo).rolling_min(window_size=ventana).over(cliente_col)).round(3).alias(f"{campo}_range_ratio_{ventana}m"),
-            # Deltas y tasas de cambio con redondeo
+            # Deltas y tasas de cambio
             (pl.col(campo) - pl.col(campo).shift(ventana).over(cliente_col)).round(3).alias(f"{campo}_delta_{ventana}m"),
             ((pl.col(campo) - pl.col(campo).shift(ventana).over(cliente_col)) /
              pl.col(campo).shift(ventana).over(cliente_col)).round(3).alias(f"{campo}_rate_change_{ventana}m")
         ])
-        
-        # Pendiente con redondeo
+
+        # Calcular pendiente como una operación personalizada
         transformaciones.append(
             pl.col(campo)
             .rolling_apply(window_size=ventana, function=calculate_slope)
@@ -82,10 +81,11 @@ for campo in columnas_dinamicas:
             .alias(f"{campo}_slope_{ventana}m")
         )
 
-    # Shift del mes anterior con redondeo
+    # Agregar shift del mes anterior
     transformaciones.append(
         pl.col(campo).shift(1).over(cliente_col).round(3).alias(f"{campo}_prev_1m")
     )
+
 
 
 # Aplicamos las transformaciones al DataFrame
