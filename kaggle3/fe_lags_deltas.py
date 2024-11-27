@@ -1,7 +1,8 @@
 import polars as pl
+import numpy as np
 
 
-dataset_input = '/home/fililoco/buckets/b1/datasets/competencia_02_preprocesamiento_12_3.csv'
+dataset_input = '/home/fililoco/buckets/b1/datasets/competencia_02_competencia_03_pre.parquet'
 # Lee el archivo CSV usando Polars
 competencia_02 = pl.read_csv(dataset_input)
 
@@ -32,38 +33,67 @@ campos_iniciales = [
 # Ordenar los datos por cliente y mes
 competencia_02 = competencia_02.sort(["numero_de_cliente", "foto_mes"])
 
-# Crear nuevas columnas dinámicamente
-columnas_dinamicas = []
 
-for campo in campos_iniciales:
-    # Ventana de 12 meses
-    columnas_dinamicas.extend([
-        pl.col(campo).rolling_mean(window_size=12).over("numero_de_cliente").alias(f"{campo}_avg_12m"),
-        pl.col(campo).rolling_max(window_size=12).over("numero_de_cliente").alias(f"{campo}_max_12m"),
-        pl.col(campo).rolling_min(window_size=12).over("numero_de_cliente").alias(f"{campo}_min_12m"),
-        pl.col(campo).rolling_sum(window_size=12).over("numero_de_cliente").alias(f"{campo}_count_12m"),
-        (pl.col(campo) * pl.col("foto_mes")).rolling_mean(window_size=12).over("numero_de_cliente").alias(f"{campo}_slope_12m"),
-    ])
-    # Ventana de 6 meses
-    columnas_dinamicas.extend([
-        pl.col(campo).rolling_mean(window_size=6).over("numero_de_cliente").alias(f"{campo}_avg_6m"),
-        pl.col(campo).rolling_max(window_size=6).over("numero_de_cliente").alias(f"{campo}_max_6m"),
-        pl.col(campo).rolling_min(window_size=6).over("numero_de_cliente").alias(f"{campo}_min_6m"),
-        pl.col(campo).rolling_sum(window_size=6).over("numero_de_cliente").alias(f"{campo}_count_6m"),
-        (pl.col(campo) * pl.col("foto_mes")).rolling_mean(window_size=6).over("numero_de_cliente").alias(f"{campo}_slope_6m"),
-    ])
-    # Ventana de 3 meses
-    columnas_dinamicas.extend([
-        pl.col(campo).rolling_mean(window_size=3).over("numero_de_cliente").alias(f"{campo}_avg_3m"),
-        pl.col(campo).rolling_max(window_size=3).over("numero_de_cliente").alias(f"{campo}_max_3m"),
-        pl.col(campo).rolling_min(window_size=3).over("numero_de_cliente").alias(f"{campo}_min_3m"),
-        pl.col(campo).rolling_sum(window_size=3).over("numero_de_cliente").alias(f"{campo}_count_3m"),
-        (pl.col(campo) * pl.col("foto_mes")).rolling_mean(window_size=3).over("numero_de_cliente").alias(f"{campo}_slope_3m"),
-    ])
-    # Mes anterior (LAG)
-    columnas_dinamicas.append(
-        pl.col(campo).shift(1).over("numero_de_cliente").alias(f"{campo}_prev_1m")
+
+# Ventanas en meses
+ventanas = [3, 6]
+
+# Lista de columnas dinámicas
+columnas_dinamicas = ["monto_gasto", "transacciones", "saldo"]  # Ejemplo
+
+# Nombre de las columnas que identifican cliente y tiempo
+cliente_col = "numero_de_cliente"
+fecha_col = "foto_mes"
+
+# Función para calcular la pendiente en una ventana
+def calculate_slope(series):
+    x = np.arange(len(series))
+    slope, _ = np.polyfit(x, series, 1)
+    return slope
+
+# Lista para almacenar todas las transformaciones
+transformaciones = []
+
+# Iteramos sobre cada columna dinámica
+# Limitar los decimales en las columnas derivadas
+for campo in columnas_dinamicas:
+    for ventana in ventanas:
+        # Agregamos estadísticas básicas con redondeo
+        transformaciones.extend([
+            pl.col(campo).rolling_mean(window_size=ventana).over(cliente_col).round(3).alias(f"{campo}_avg_{ventana}m"),
+            pl.col(campo).rolling_sum(window_size=ventana).over(cliente_col).round(3).alias(f"{campo}_sum_{ventana}m"),
+            pl.col(campo).rolling_max(window_size=ventana).over(cliente_col).round(3).alias(f"{campo}_max_{ventana}m"),
+            pl.col(campo).rolling_min(window_size=ventana).over(cliente_col).round(3).alias(f"{campo}_min_{ventana}m"),
+            pl.col(campo).rolling_std(window_size=ventana).over(cliente_col).round(3).alias(f"{campo}_volatility_{ventana}m"),
+            (pl.col(campo).rolling_max(window_size=ventana).over(cliente_col) /
+             pl.col(campo).rolling_min(window_size=ventana).over(cliente_col)).round(3).alias(f"{campo}_range_ratio_{ventana}m"),
+            # Deltas y tasas de cambio con redondeo
+            (pl.col(campo) - pl.col(campo).shift(ventana).over(cliente_col)).round(3).alias(f"{campo}_delta_{ventana}m"),
+            ((pl.col(campo) - pl.col(campo).shift(ventana).over(cliente_col)) /
+             pl.col(campo).shift(ventana).over(cliente_col)).round(3).alias(f"{campo}_rate_change_{ventana}m")
+        ])
+        
+        # Pendiente con redondeo
+        transformaciones.append(
+            pl.col(campo)
+            .rolling_apply(window_size=ventana, function=calculate_slope)
+            .over(cliente_col)
+            .round(3)
+            .alias(f"{campo}_slope_{ventana}m")
+        )
+
+    # Shift del mes anterior con redondeo
+    transformaciones.append(
+        pl.col(campo).shift(1).over(cliente_col).round(3).alias(f"{campo}_prev_1m")
     )
+
+
+# Aplicamos las transformaciones al DataFrame
+competencia_02 = competencia_02.with_columns(transformaciones)
+
+# Mostrar el resultado
+print(competencia_02)
+
 
 # Agregar las nuevas columnas al dataframe original
 # Suponiendo que `columnas_dinamicas` es una lista de expresiones Polars para agregar nuevas columnas
@@ -80,7 +110,7 @@ competencia_02_sumas_drifting = competencia_02_sumas_drifting.filter(
 )
 
 # Ruta de salida
-dataset_output = '/home/fililoco/buckets/b1/datasets/competencia_02_sumas_drifting_fe_3_08.csv'
+dataset_output = '/home/fililoco/buckets/b1/datasets/competencia_03_pre_lags.parquet'
 
 # Exportar a CSV
 competencia_02_sumas_drifting.write_csv(dataset_output)
