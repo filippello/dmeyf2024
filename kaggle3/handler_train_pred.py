@@ -166,8 +166,8 @@ if __name__ == "__main__":
     #iii. Ordenamos a los clientes por probabilidad de ser "BAJA" de forma descendente.
     tb_entrega = X_pred.sort_values(by='Probabilidad', ascending=False)
     #iv. Genero una lista de distintos cortes candidatos, para enviar a Kaggle.
-    cortes = range(9500,12000,200)
-    #cortes = [10400]
+    #cortes = range(9500,12500,100)
+    cortes = [10400]
     #v. Generamos las distintas predicciones de clases a partir de los distintos cortes posibles.
     num_subida_kaggle = 1
 
@@ -179,7 +179,7 @@ if __name__ == "__main__":
         
         print("Cantidad de clientes {}".format(envios))
         #2. Guardamos el archivo para Kaggle.
-        nombre_archivo = "z103_00{}.csv".format(envios)
+        nombre_archivo = "K107_00{}.csv".format(num_subida_kaggle)
         ruta_archivo= f"{entregas_path}{nombre_archivo}"
         resultados.to_csv(ruta_archivo, index=False)
 

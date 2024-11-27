@@ -1,10 +1,19 @@
 import polars as pl
 
 
-dataset_input = '/home/fililoco/buckets/b1/datasets/competencia_02_preprocesamiento_12_3.csv'
+dataset_input = '/Users/federicofilippello/Projects/dmeyf2024/kaggle2/competencia_02_08.csv'
+
+
+mes_train_ult_6_meses = [201908, 202008]
 # Lee el archivo CSV usando Polars
 competencia_02 = pl.read_csv(dataset_input)
+competencia_02_sumas_drifting = competencia_02.filter(
+    pl.col('foto_mes').is_in(mes_train_ult_6_meses)
+)
 
+print(competencia_02_sumas_drifting)
+
+exit()
 # Verifica los datos cargados
 print(competencia_02.head())  # Muestra las primeras filas
 

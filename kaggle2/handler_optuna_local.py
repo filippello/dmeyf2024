@@ -72,7 +72,7 @@ if __name__ == "__main__":
     print(f'storage_name: {storage_name}')
 
     # Preparar el dataset
-    data = prepare_df_del_columns(data, d_columns)
+    #data = prepare_df_del_columns(data, d_columns)
     if study_data == "only_baja_2":
         X_train, y_train_binaria1, y_train_binaria2, w_train, X_test, y_test_binaria1, y_test_class, w_test = prepare_df_1_clasic(data, mes_train, mes_test)
     else:

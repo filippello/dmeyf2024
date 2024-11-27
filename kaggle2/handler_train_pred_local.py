@@ -28,15 +28,19 @@ if __name__ == "__main__":
 
     # Definir rutas y archivos
     if(config["local"]):
-
-
-        
         base_path = config['base_path_local']
         dataset_path = "/Users/federicofilippello/Projects/dmeyf2024/kaggle2/competencia_02_DE_1y_sample.csv"
-        storage_name = "sqlite:////Users/federicofilippello/Projects/dmeyf2024/kaggle2/db/optimization_lgbm.db"
+        storage_name = "sqlite:////Users/federicofilippello/Projects/dmeyf2024/kaggle2/optimization_lgbm.db"
         modelos_path = os.path.join(base_path, config["modelos_path"])
         db_path = os.path.join(base_path, config["db_path"])
         entregas_path = '/Users/federicofilippello/Projects/dmeyf2024/kaggle2/entregas/'
+
+        entregas_path = '/Users/federicofilippello/Projects/dmeyf2024/kaggle2/entregas/'
+        base_path = config['base_path_local']
+        dataset_path = config['dataset_path_local']+config["dataset_file"]
+        storage_name = "sqlite:///optimization_lgbm.db"
+        modelos_path = os.path.join(base_path, config["modelos_path"])
+        db_path = os.path.join(base_path, config["db_path"])
     else:
         base_path = f'/home/{config["gcloud_user"]}/dmeyf2024/kaggle2'
         dataset_path = f'/home/{config["gcloud_user"]}/buckets/b1/datasets/{config["dataset_file"]}'
@@ -83,7 +87,7 @@ if __name__ == "__main__":
 
     #preparamos el dataset
     #borramnos columnas
-    data = prepare_df_del_columns(data,d_columns)
+    #data = prepare_df_del_columns(data,d_columns)
     #lo fraccionamos
 
     #X_train, y_train_binaria1, y_train_binaria2, w_train, X_test, y_test_binaria1, y_test_class, w_test = prepare_df_1_clasic(data,mes_train,mes_test)
@@ -166,8 +170,8 @@ if __name__ == "__main__":
     #iii. Ordenamos a los clientes por probabilidad de ser "BAJA" de forma descendente.
     tb_entrega = X_pred.sort_values(by='Probabilidad', ascending=False)
     #iv. Genero una lista de distintos cortes candidatos, para enviar a Kaggle.
-    cortes = range(9500,12000,200)
-    #cortes = [10400]
+    #cortes = range(9500,12500,100)
+    cortes = [11700]
     #v. Generamos las distintas predicciones de clases a partir de los distintos cortes posibles.
     num_subida_kaggle = 1
 
@@ -179,7 +183,7 @@ if __name__ == "__main__":
         
         print("Cantidad de clientes {}".format(envios))
         #2. Guardamos el archivo para Kaggle.
-        nombre_archivo = "z103_00{}.csv".format(envios)
+        nombre_archivo = "K107_00{}.csv".format(num_subida_kaggle)
         ruta_archivo= f"{entregas_path}{nombre_archivo}"
         resultados.to_csv(ruta_archivo, index=False)
 
