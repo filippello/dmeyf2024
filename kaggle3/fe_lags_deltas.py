@@ -101,8 +101,8 @@ competencia_02_sumas_drifting = competencia_02.with_columns(*columnas_dinamicas)
 
 # Verificar los resultados
 print(competencia_02_sumas_drifting.head())
+mes_train_ult_6_meses = [201909, 202003, 202009,202103,202109]
 
-mes_train_ult_6_meses = [201908, 202008, 202108]
 
 # Filtrar las filas donde 'foto_mes' está en la lista `mes_train_ult_6_meses`
 competencia_02_sumas_drifting = competencia_02_sumas_drifting.filter(
