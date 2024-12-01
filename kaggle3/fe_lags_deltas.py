@@ -4,7 +4,7 @@ import numpy as np
 
 dataset_input = '/home/fililoco/buckets/b1/datasets/competencia_03_pre.parquet'
 # Lee el archivo CSV usando Polars
-competencia_02 = pl.read_csv(dataset_input)
+competencia_02 = pl.read_parquet(dataset_input)
 
 # Verifica los datos cargados
 print(competencia_02.head())  # Muestra las primeras filas
