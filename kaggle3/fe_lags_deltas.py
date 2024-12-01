@@ -2,7 +2,7 @@ import polars as pl
 import numpy as np
 
 
-dataset_input = '/home/fililoco/buckets/b1/datasets/competencia_02_competencia_03_pre.parquet'
+dataset_input = '/home/fililoco/buckets/b1/datasets/competencia_03_pre.parquet'
 # Lee el archivo CSV usando Polars
 competencia_02 = pl.read_csv(dataset_input)
 
