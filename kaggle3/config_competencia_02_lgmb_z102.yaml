@@ -1,0 +1,28 @@
+base_path_local: /Users/federicofilippello/Projects/dmeyf2024/src/experimentosfede
+bucketname: fililocobuket
+costo_estimulo: 7000
+vm_name: z102
+d_columns:
+- cprestamos_personales
+- mprestamos_personales
+dataset_file: competencia_02_sumas_drifting_fe_3_08.csv
+dataset_path_local: /Users/federicofilippello/Projects/dmeyf2024/src/experimentosfede/
+db_path: db/
+ganancia_acierto: 273000
+gcloud_user: fililoco
+local: false
+mes_test: 202107
+mes_test_prediccion: 202109
+mes_train:
+  - 202009
+  - 201909
+modelos_path: modelos/
+n_trials: 30
+semillas:
+- 181195
+study_aditional: ''
+study_data: all
+study_number: '1'
+study_protocol: lgmb
+study_timeframe: '201909_202009'
+study_type: competencia_03
