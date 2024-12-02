@@ -46,7 +46,7 @@ if __name__ == "__main__":
     df_continua_excluido = df_continua.filter(pl.col('foto_mes') != foto_mes_excluir)
 
     # Agrupamos por 'foto_mes' y aplicamos un undersampling del 20% para cada grupo
-    df_undersampled = df_continua_excluido.groupby('foto_mes').apply(
+    df_undersampled = df_continua_excluido.group_by('foto_mes').apply(
         lambda group: group.sample(frac=0.2)
     ).flatten()
 
