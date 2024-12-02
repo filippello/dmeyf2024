@@ -70,13 +70,13 @@ if __name__ == "__main__":
     for col in columnas:
         agg_columns.append(pl.col(col).max().alias(f"max_1m_{col}"))
         agg_columns.append(pl.col(col).min().alias(f"min_1m_{col}"))
-        agg_columns.append(pl.col(col).mean().alias(f"avg_1m_{col}"))
+        agg_columns.append(pl.col(col).mean().round(2).alias(f"avg_1m_{col}"))
         agg_columns.append(pl.col(col).max().alias(f"max_3m_{col}"))
         agg_columns.append(pl.col(col).min().alias(f"min_3m_{col}"))
-        agg_columns.append(pl.col(col).mean().alias(f"avg_3m_{col}"))
+        agg_columns.append(pl.col(col).mean().round(2).alias(f"avg_3m_{col}"))
         agg_columns.append(pl.col(col).max().alias(f"max_9m_{col}"))
         agg_columns.append(pl.col(col).min().alias(f"min_9m_{col}"))
-        agg_columns.append(pl.col(col).mean().alias(f"avg_9m_{col}"))
+        agg_columns.append(pl.col(col).mean().round(2).alias(f"avg_9m_{col}"))
 
     # Aplicar group_by() para calcular las métricas por cliente
     agg_df = df.group_by("numero_de_cliente").agg(agg_columns)
@@ -87,18 +87,18 @@ if __name__ == "__main__":
     # Crear lags para 1 mes, 3 meses y 9 meses, pero por cada 'numero_de_cliente' para cada columna de la lista
     lag_columns = []
     for col in columnas:
-        lag_columns.append(pl.col(col).shift(1).over("numero_de_cliente").alias(f"{col}_lag_1m"))
-        lag_columns.append(pl.col(col).shift(3).over("numero_de_cliente").alias(f"{col}_lag_3m"))
-        lag_columns.append(pl.col(col).shift(9).over("numero_de_cliente").alias(f"{col}_lag_9m"))
+        lag_columns.append(pl.col(col).shift(1).over("numero_de_cliente").round(2).alias(f"{col}_lag_1m"))
+        lag_columns.append(pl.col(col).shift(3).over("numero_de_cliente").round(2).alias(f"{col}_lag_3m"))
+        lag_columns.append(pl.col(col).shift(9).over("numero_de_cliente").round(2).alias(f"{col}_lag_9m"))
 
     df = df.with_columns(lag_columns)
 
     # Calcular delta entre el primer valor de la ventana y el actual para cada columna
     delta_columns = []
     for col in columnas:
-        delta_columns.append((pl.col(col) - pl.col(f"{col}_lag_1m")).alias(f"delta_1m_{col}"))
-        delta_columns.append((pl.col(col) - pl.col(f"{col}_lag_3m")).alias(f"delta_3m_{col}"))
-        delta_columns.append((pl.col(col) - pl.col(f"{col}_lag_9m")).alias(f"delta_9m_{col}"))
+        delta_columns.append((pl.col(col) - pl.col(f"{col}_lag_1m")).round(2).alias(f"delta_1m_{col}"))
+        delta_columns.append((pl.col(col) - pl.col(f"{col}_lag_3m")).round(2).alias(f"delta_3m_{col}"))
+        delta_columns.append((pl.col(col) - pl.col(f"{col}_lag_9m")).round(2).alias(f"delta_9m_{col}"))
 
     df = df.with_columns(delta_columns)
 
